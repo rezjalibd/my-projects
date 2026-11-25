@@ -1,5 +1,6 @@
 // my-projects-api — Cloudflare Worker for Reza's My Projects panel.
-// KV binding: MY_PROJECTS. Secret: PANEL_PASSWORD (set via cf-projects.py secret-put).
+// KV binding: MY_PROJECTS. Secrets: PANEL_PASSWORD (Reza's panel password)
+// and SPACE_TOKEN (service token for the Space) — both set via cf-projects.py secret-put.
 // Every /api/* request except /api/health must carry
 //   Authorization: Bearer <PANEL_PASSWORD>
 // Data model (mirrors the in-app My Projects space):
@@ -46,9 +47,16 @@ export default {
     }
 
     // --- auth (all /api/* except health) ---
+    // Two accepted Bearer tokens: PANEL_PASSWORD (Reza's panel password,
+    // used by the public page) and SPACE_TOKEN (service token used by the
+    // My Projects Space inside Muse — the Space is the data center and the
+    // public page is only a window onto the same store).
     const auth = request.headers.get("Authorization") || "";
     const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-    if (!env.PANEL_PASSWORD || token !== env.PANEL_PASSWORD) {
+    const okToken =
+      (env.PANEL_PASSWORD && token === env.PANEL_PASSWORD) ||
+      (env.SPACE_TOKEN && token === env.SPACE_TOKEN);
+    if (!okToken) {
       return json({ ok: false, error: "unauthorized" }, 401);
     }
 
