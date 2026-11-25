@@ -3,18 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>پروژه‌های من</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <h1>پروژه‌های من</h1>
-    <p>پنل مدیریت پروژه‌های نیلای — My Projects</p>
-  </div>
-</header>
 <main class="wrap">
-  <section id="login-view" class="login card">
+  <section id="login-view" class="login">
     <h2>ورود به پنل</h2>
     <p class="muted">برای دیدن پروژه‌ها رمز پنل را وارد کنید.</p>
     <form id="login-form">
@@ -25,30 +20,48 @@
   </section>
 
   <section id="app-view" hidden>
-    <div class="toolbar">
-      <button class="btn primary" id="new-project-btn">+ پروژه جدید</button>
+    <header class="list-head">
+      <h1>پروژه‌های من</h1>
       <button class="btn ghost" id="logout-btn">خروج</button>
-    </div>
+    </header>
     <div id="list-view">
-      <div id="project-grid" class="grid"></div>
+      <div id="summary" class="summary" hidden>
+        <div class="cell"><div class="num" id="sum-total">۰</div><div class="lbl">کل پروژه‌ها</div></div>
+        <div class="cell"><div class="num" id="sum-doing">۰</div><div class="lbl">در حال انجام</div></div>
+        <div class="cell"><div class="num" id="sum-done">۰</div><div class="lbl">تکمیل‌شده</div></div>
+      </div>
+      <div class="search-row"><input id="search-input" placeholder="جست‌جو در پروژه‌ها…" type="search"></div>
+      <div id="filter-chips" class="filters"></div>
+      <div id="project-grid" class="list"></div>
     </div>
     <div id="detail-view" hidden></div>
+    <button class="fab" id="new-project-btn">+ پروژه‌ی جدید</button>
+  </section>
+
+  <section id="wizard-view" class="wiz-wrap" hidden>
+    <header class="wizard-head">
+      <button class="back-btn" id="wiz-cancel">انصراف</button>
+      <h1>پروژه‌ی جدید</h1>
+      <span class="wizard-counter" id="wiz-counter">گام ۱ از ۶</span>
+    </header>
+    <div class="wiz-segments" id="wiz-segments" role="progressbar"></div>
+    <h2 class="wiz-step-title" id="wiz-step-title"></h2>
+    <p class="wiz-step-desc" id="wiz-step-desc"></p>
+    <div id="wiz-confirm" class="wiz-confirm" role="alertdialog" hidden>
+      <b>خروج از ساخت پروژه؟</b>
+      <p class="muted">اطلاعات واردشده ذخیره نمی‌شود.</p>
+      <div class="row">
+        <button class="btn danger" id="wiz-confirm-exit">بستن بدون ذخیره</button>
+        <button class="btn" id="wiz-confirm-stay">ادامه دادن</button>
+      </div>
+    </div>
+    <div id="wizard-body" class="wiz-body"></div>
+    <nav class="wiz-nav"><div class="wiz-nav-inner">
+      <button class="btn" id="wiz-back">قبلی</button>
+      <button class="btn primary" id="wiz-next">گام بعد</button>
+    </div></nav>
   </section>
 </main>
-
-<div id="wizard-modal" class="modal" hidden>
-  <div class="modal-card">
-    <div class="modal-head">
-      <h2>پروژه جدید</h2>
-      <button class="mini" id="wiz-close">✕</button>
-    </div>
-    <div id="wizard-body"></div>
-    <div class="modal-actions">
-      <button class="btn ghost" id="wiz-back">مرحله قبل</button>
-      <button class="btn primary" id="wiz-next">مرحله بعد</button>
-    </div>
-  </div>
-</div>
 
 <script src="app.js" defer></script>
 </body>
